@@ -32,8 +32,8 @@ public class Main {
 		try {
 			// create a message
 			MimeMessage msg = new MimeMessage(session);
-			msg.setFrom(new InternetAddress("beeemaja@gmail.com"));
-			msg.setRecipient(Message.RecipientType.TO, new InternetAddress("maybareeva@gmail.com"));
+			msg.setFrom(new InternetAddress("******@gmail.com"));
+			msg.setRecipient(Message.RecipientType.TO, new InternetAddress("*****@gmail.com"));
 			msg.setSubject("JavaMail hello world example");
 			msg.setSentDate(new Date());
 			msg.setText(msgBody);
