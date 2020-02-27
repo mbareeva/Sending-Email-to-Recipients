@@ -5,7 +5,7 @@ import javax.mail.internet.*;
 
 public class Main {
 
-	public List<String> addresses = new ArrayList<String>();
+	public static String addresses;
 	public static void main(String[] args) {
 
 		String msgBody = "Hello! Here's a message for you! Have a nice day!";
@@ -33,7 +33,8 @@ public class Main {
 			// create a message
 			MimeMessage msg = new MimeMessage(session);
 			msg.setFrom(new InternetAddress("******@gmail.com"));
-			msg.setRecipient(Message.RecipientType.TO, new InternetAddress("*****@gmail.com"));
+			InternetAddress[] addressArray = InternetAddress.parse(addresses);
+			msg.setRecipients(Message.RecipientType.TO, addressArray);
 			msg.setSubject("JavaMail hello world example");
 			msg.setSentDate(new Date());
 			msg.setText(msgBody);
@@ -45,13 +46,9 @@ public class Main {
 		}
 	}
 	
-	public void addRecipient(String email) {
-		addresses.add(email);
-	
-	}
-	
-	public List<String> getRecipients(){
-		return addresses;
+	public String addRecipient(String email) {
+		addresses += email;
+		return addresses + ",";
 	}
 }
 
