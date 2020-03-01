@@ -89,12 +89,9 @@ public class EmailSender implements Runnable {
 
 		Session session = Session.getInstance(props, new Authenticator() {
 			protected PasswordAuthentication getPasswordAuthentication() {
-				// insert gmail and password - prerequirement security services in google
-				// account
 				return new PasswordAuthentication(gmail, password);
 			}
 		});
-
 		return session;
 	}
 
