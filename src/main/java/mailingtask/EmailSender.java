@@ -16,56 +16,73 @@ import javax.mail.internet.MimeMessage;
  */
 public class EmailSender implements Runnable {
 	private String recipientEmail;
+	private int emailsAmount;
 
 	@Override
 	public void run() {
 		try {
-
-			// Task: fake the email sending waiting half a second
+			// Faking the email sending waiting for 0.5 second.
 			Thread.sleep(500);
 			System.out.print("sending...");
 		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		this.send();
+		// set in the parameter the amount of mails to send.
+		this.send(emailsAmount);
 	}
 
-	/*
+	/**
+	 * Set the amount of mails to send to the recipients.
+	 * 
+	 * @param n The amount of mails to be sent.
+	 */
+	public void setEmailsAmount(int n) {
+		this.emailsAmount = n;
+	}
+
+	/**
 	 * Sets the recipient(s) of a message.
+	 * 
+	 * @param email The list of recipient mails divided by the comma
 	 */
 	public void setProperties(String email) {
 		this.recipientEmail = email;
 	}
 
-	/*
-	 * Creates a session for the sender. Sets the Subject, body of the message.
-	 * Prints out the message to the console in case of successful uninterrupted
-	 * message delivery.
+	/**
+	 * Creates a session for the sender. Sets the Subject, body of the message. The
+	 * message delivery is fake as the Transport.send() method is commented out.
+	 * Instead the message will be printed out to the console in case of successful
+	 * uninterrupted "fake" message delivery.
+	 * 
+	 * @param mailsCount The amount of mails to be send out.
 	 */
-	public void send() {
-
+	public void send(int mailsCount) {
 		try {
-			// create a message
 			Session session = createSession();
-			MimeMessage msg = new MimeMessage(session);
-			setRecipients(msg, recipientEmail);
-			msg.setFrom(new InternetAddress("test@gmail.com"));
-			msg.setSubject("Code challenge accepted.");
-			msg.setSentDate(new Date());
-			String msgBody = "Hello! Here's a message for you! Have a nice day!";
-			msg.setText(msgBody);
-			// Transport.send(msg);
-			System.out.println("Successfully sent");
+			// in case of multiple emails, the message is going
+			// to be send multiple times depending on the value of
+			// mailsCount parameter.
+			for (int i = 0; i < mailsCount; i++) {
+				MimeMessage msg = new MimeMessage(session);
+				setRecipients(msg, recipientEmail);
+				msg.setFrom(new InternetAddress("test@gmail.com"));
+				msg.setSubject("Code challenge accepted.");
+				msg.setSentDate(new Date());
+				String msgBody = "Hello! Here's a message for you! Have a nice day!";
+				msg.setText(msgBody);
+				Thread.sleep(500);
+				System.out.println("Successfully sent");
+			}
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
 	}
 
-	/*
+	/**
 	 * Create the properties for the successful session with a gmail host.
-	 * @return session The created authenticated session with a particular host &
-	 * port.
+	 * 
+	 * @return The created authenticated session with a particular host & port.
 	 */
 	public Session createSession() {
 		// email & password of the sender
@@ -95,14 +112,16 @@ public class EmailSender implements Runnable {
 		return session;
 	}
 
-	/*
+	/**
 	 * Set the recipient list for the sender and create new e-mail addresses.
-	 * @param msg The message to be set to the recipient list.
+	 * 
+	 * @param msg       The message to be set to the recipient list.
 	 * @param recipient The recipient list. If more than one recipient exists, then
-	 * divide it by comma.
+	 *                  divide it by comma.
 	 */
 	public void setRecipients(MimeMessage msg, String recipient) throws Exception {
-		//parses the string with email addresses divided by commas and adds the to the internet address list.
+		// parses the string with email addresses divided by commas and adds the to the
+		// Internet address list.
 		InternetAddress[] addresses = InternetAddress.parse(recipient);
 		msg.setRecipients(Message.RecipientType.TO, addresses);
 	}

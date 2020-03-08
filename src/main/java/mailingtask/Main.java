@@ -7,6 +7,7 @@ public class Main {
 	public static void main(String[] args) throws InterruptedException {
 		EmailSender sender = new EmailSender();
 		sender.setProperties("recipient@gmail.com, test@gmail.com");
+		sender.setEmailsAmount(100);
 		new Thread(sender).start();
 	}
 }
